@@ -51,6 +51,8 @@ class lpmFile:
         os.remove(str(hcode))
         return hcode
     def LpmToCode(self,hash_):
+        import os
         self.extractLPM(self,str(hash_)+'.lpm',rewrite=True)
         with open(str(hash_)) as file:
             exec(file.read())
+        os.remove(hash_)
