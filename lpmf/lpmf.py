@@ -41,13 +41,16 @@ class lpmFile:
             #with open(path[:-4], 'w') as file2:
     def CodeToLpm(self,code):
         import os
-        with open(str(hash(code)), 'w') as file:
+        import hashlib
+        hcode = hashlib.md5(code.encode())
+        hcode = hcode.hexdigest()
+
+        with open(str(hcode), 'w') as file:
             file.write(code)
-        self.arhiveLPM(self, str(hash(code)))
-        os.remove(str(hash(code)))
-        return hash(code)
+        self.arhiveLPM(self, str(hcode))
+        os.remove(str(hcode))
+        return hcode
     def LpmToCode(self,hash_):
-        self.extractLPM(str(hash_),rewrite=True)
+        self.extractLPM(self,str(hash_)+'.lpm',rewrite=True)
         with open(str(hash_)) as file:
-            for i in file:
-                exec(i)
+            exec(file.read())
